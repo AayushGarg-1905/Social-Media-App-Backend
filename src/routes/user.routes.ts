@@ -7,4 +7,7 @@ const dtoValidatorMiddleware = new DtoValidatorMiddleware.default();
 
 const userController = new UserController.default();
 router.put('/update',authMiddleware.authenticateUser.bind(authMiddleware), dtoValidatorMiddleware.validateRequest(UserDto.UpdateUserReqDto), userController.updateUser.bind(userController));
+router.delete('/delete', authMiddleware.authenticateUser.bind(authMiddleware), userController.deleteUser.bind(userController));
+router.get('/all', authMiddleware.authenticateUser.bind(authMiddleware), userController.getAllUsers.bind(userController));
+router.get('/:id', authMiddleware.authenticateUser.bind(authMiddleware), dtoValidatorMiddleware.validateRequest(UserDto.GetUserReqDto), userController.getSingleUser.bind(userController));
 export default router;
