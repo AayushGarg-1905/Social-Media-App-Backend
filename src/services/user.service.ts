@@ -56,6 +56,26 @@ export default class UserService {
        return user;
     }
 
+    public async followUser(params: UserDto.FollowUserReqDto, userId: Types.ObjectId){
+        await this.validateFollowUser(params, userId);
+
+        const session = await this.databaseService.addDbTransaction();
+        await this.databaseService.handleTransaction(session, async () => {
+            await UserModel.default.updateOne({_id: params.followerId}, {$push:{followers:userId}}, {session})
+            await UserModel.default.updateOne({_id: userId}, {$push:{following: params.followerId}}, {session})
+        });
+    }
+
+    public async unFollowUser(params: UserDto.UnFollowUserReqDto, userId: Types.ObjectId){
+        await this.validateUnFollowUser(params, userId);
+
+        const session = await this.databaseService.addDbTransaction();
+        await this.databaseService.handleTransaction(session, async () => {
+            await UserModel.default.updateOne({_id: params.followerId}, {$pull:{followers:userId}}, {session})
+            await UserModel.default.updateOne({_id: userId}, {$pull:{following: params.followerId}}, {session})
+        });
+    }
+
     private async validateUpdateUser(userId: Types.ObjectId){
         const user = await UserModel.default.findOne({_id: userId});
         if(!user){
@@ -77,6 +97,28 @@ export default class UserService {
             throw new BadRequestError('User does not exist');
         }
         return { user };
+    }
+
+    private async validateFollowUser(params: UserDto.FollowUserReqDto, userId:Types.ObjectId){
+        const followerUser = await UserModel.default.findOne({_id: params.followerId});
+        if(!followerUser){
+            throw new BadRequestError('Follower person does not exist');
+        }
+        const isAlreadyFollowing = followerUser.followers.find((person)=>person.equals(userId));
+        if(isAlreadyFollowing){
+            throw new BadRequestError('You are already following this person');
+        }
+    }
+
+    private async validateUnFollowUser(params: UserDto.UnFollowUserReqDto, userId:Types.ObjectId){
+        const followerUser = await UserModel.default.findOne({_id: params.followerId});
+        if(!followerUser){
+            throw new BadRequestError('Follower person does not exist');
+        }
+        const isAlreadyUnFollowing = followerUser.followers.find((person)=>person.equals(userId));
+        if(!isAlreadyUnFollowing){
+            throw new BadRequestError('You are already not following this person');
+        }
     }
 
 }

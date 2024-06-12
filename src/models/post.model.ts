@@ -18,11 +18,11 @@ const PostSchema = new mongoose.Schema({
         type: String,
     },
     likes: {
-        type: Array,
+        type: [Schema.Types.ObjectId],
         default: []
     },
     comments: {
-        type: Array,
+        type: [Schema.Types.ObjectId],
         default: []
     }
 }, { timestamps: true })

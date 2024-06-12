@@ -63,7 +63,7 @@ export default class PostService {
         return {postsData};
     }
 
-    public async getAllUserPosts(params: PostDto.GetUserPostsDto){
+    public async getAllUserPosts(params: PostDto.GetUserPostsReqDto){
         const posts = await PostModel.default.find({userId: params.userId});
         const postsData = posts.map((post)=>{
             return {
@@ -76,6 +76,16 @@ export default class PostService {
             }
         })
         return {postsData};
+    }
+
+    public async likePost(params: PostDto.LikePostReqDto, userId: Types.ObjectId){
+        await this.validateLikePost(params, userId);
+        await PostModel.default.updateOne({_id: params.postId},{$push:{likes:userId}});
+    }
+
+    public async unLikePost(params: PostDto.LikePostReqDto, userId: Types.ObjectId){
+        await this.validateUnLikePost(params, userId);
+        await PostModel.default.updateOne({_id: params.postId},{$pull:{likes:userId}});
     }
 
     private async validateCreatePost(userId: Types.ObjectId){
@@ -98,8 +108,30 @@ export default class PostService {
     private async validateGetSinglePost(params: PostDto.GetPostReqDto){
         const post = await PostModel.default.findOne({_id: params.postId});
         if(!post){
-            throw new BadRequestError("Post doens not exist");
+            throw new BadRequestError("Post does not exist");
         }
         return {post};
+    }
+
+    private async validateLikePost(params: PostDto.LikePostReqDto, userId:Types.ObjectId){
+        const post = await PostModel.default.findOne({_id: params.postId});
+        if(!post){
+            throw new BadRequestError("Post does not exist");
+        }
+        const isAlreadyLiked = post.likes.find((id)=>id.equals(userId));
+        if(isAlreadyLiked){
+            throw new BadRequestError('You have already liked this post');
+        }
+    }
+
+    private async validateUnLikePost(params: PostDto.UnLikePostReqDto, userId:Types.ObjectId){
+        const post = await PostModel.default.findOne({_id: params.postId});
+        if(!post){
+            throw new BadRequestError("Post does not exist");
+        }
+        const isAlreadyLiked = post.likes.find((id)=>id.equals(userId));
+        if(!isAlreadyLiked){
+            throw new BadRequestError('You have already unliked this post');
+        }
     }
 }

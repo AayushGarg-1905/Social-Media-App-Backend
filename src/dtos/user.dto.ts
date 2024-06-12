@@ -29,3 +29,17 @@ export class GetUserReqDto {
     @IsMongoId()
     id: Types.ObjectId
 }
+
+export class FollowUserReqDto {
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    followerId: Types.ObjectId   // id of person to which we have to follow
+}
+
+export class UnFollowUserReqDto {
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    followerId: Types.ObjectId   // id of person to which we have to follow
+}

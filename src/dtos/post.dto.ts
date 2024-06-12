@@ -44,9 +44,23 @@ export class GetPostReqDto {
     postId: Types.ObjectId
 }
 
-export class GetUserPostsDto {
+export class GetUserPostsReqDto {
     @IsDefined()
     @Expose()
     @IsMongoId()
     userId: Types.ObjectId
+}
+
+export class LikePostReqDto {
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    postId: Types.ObjectId
+}
+
+export class UnLikePostReqDto {
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    postId: Types.ObjectId
 }

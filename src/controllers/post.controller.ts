@@ -61,9 +61,31 @@ export default class PostController{
 
     public async getAllUserPosts(req: express.Request, res: express.Response, next: express.NextFunction){
         try{
-            const params: PostDto.GetUserPostsDto = {...req.body, ...req.params};
+            const params: PostDto.GetUserPostsReqDto = {...req.body, ...req.params};
             const result = await this.postService.getAllUserPosts(params);
             res.status(200).json({msg:' User Posts fetched successfully',data:result})
+        } catch(e){
+            next(e);
+        }
+    }
+
+    public async likePost(req: express.Request, res: express.Response, next: express.NextFunction){
+        try{
+            const params: PostDto.LikePostReqDto = {...req.body, ...req.params};
+            const userId = req.userId!;
+            await this.postService.likePost(params, userId);
+            res.status(200).json({msg:' User Posts liked successfully'})
+        } catch(e){
+            next(e);
+        }
+    }
+
+    public async unLikePost(req: express.Request, res: express.Response, next: express.NextFunction){
+        try{
+            const params: PostDto.UnLikePostReqDto = {...req.body, ...req.params};
+            const userId = req.userId!;
+            await this.postService.unLikePost(params, userId);
+            res.status(200).json({msg:' User Posts unliked successfully'})
         } catch(e){
             next(e);
         }

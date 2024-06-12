@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export enum Gender {
     male = "MALE",
@@ -52,11 +52,11 @@ const UserSchema = new mongoose.Schema({
         default: "",
     },
     followers: {
-        type: Array,
+        type: [Schema.Types.ObjectId],
         default: [],
     },
     following: {
-        type: Array,
+        type: [Schema.Types.ObjectId],
         default: []
     }
 }, { timestamps: true })
