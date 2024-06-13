@@ -2,9 +2,8 @@
 // @ts-nocheck
 
 
-import { IsDefined, IsInt, IsNotEmpty, IsNumberString, IsObject, IsOptional, IsString, Length, Max, Min, IsEmail, IsEnum, IsHash, IsMongoId } from 'class-validator';
+import { IsDefined, IsInt, IsOptional, IsString, Length, Max, Min, IsMongoId } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { UserModel } from '../internal_exports';
 import { Types } from 'mongoose';
 
 export class UpdateUserReqDto {

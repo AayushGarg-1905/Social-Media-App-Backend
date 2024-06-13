@@ -1,12 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { IsDefined, IsEmail, IsMongoId } from 'class-validator';
+import { IsDefined, IsMongoId } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { IsDefined, IsInt, IsNotEmpty, IsNumberString, IsObject, IsOptional, IsString, Length, Max, Min, IsEmail, IsEnum, IsHash } from 'class-validator';
+import { IsDefined, IsOptional, IsString, Length } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { UserModel } from '../internal_exports';
 import { Types } from 'mongoose';
 
 export class CreatePostReqDto {
@@ -14,7 +13,7 @@ export class CreatePostReqDto {
     @Expose()
     @IsString()
     @Length(2,200)
-    caption: string;
+    caption?: string;
 }
 
 export class UpdatePostReqDto {

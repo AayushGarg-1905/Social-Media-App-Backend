@@ -4,7 +4,7 @@
 import { IsDefined, IsEmail } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-import { IsDefined, IsInt, IsNotEmpty, IsNumberString, IsObject, IsOptional, IsString, Length, Max, Min, IsEmail, IsEnum, IsHash } from 'class-validator';
+import { IsDefined, IsInt, IsNotEmpty, IsString, Length, Max, Min, IsEmail, IsEnum, IsHash } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { UserModel } from '../internal_exports';
 

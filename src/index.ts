@@ -7,6 +7,7 @@ import errorHandlerMiddleware from "./middlewares/error_handler.middleware";
 import userRouter from './routes/user.routes'
 import authRouter from './routes/auth.routes'
 import postRouter from './routes/post.routes'
+import CommentRouter from './routes/comment.routes'
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.get('/health',(req,res)=>{
 app.use('/api/v1/auth/users', authRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/posts',postRouter)
+app.use('/api/v1/comments',CommentRouter);
 app.use(errorHandlerMiddleware);
 
 const port = 9000;
