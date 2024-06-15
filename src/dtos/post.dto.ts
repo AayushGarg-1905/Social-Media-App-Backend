@@ -9,6 +9,7 @@ import { Expose } from 'class-transformer';
 import { Types } from 'mongoose';
 
 export class CreatePostReqDto {
+
     @IsOptional()
     @Expose()
     @IsString()

@@ -1,6 +1,8 @@
 import { Types } from "mongoose";
 import { BadRequestError } from "../config/error";
 import { AuthDto, UserModel, EncryptionService, DatabaseService, CommonUtils, PassportModel, PostModel, PostDto, UserService } from "../internal_exports";
+import fileUpload from "express-fileupload";
+import path from "path";
 
 export default class PostService {
     protected encryptionService: EncryptionService.default
@@ -12,13 +14,22 @@ export default class PostService {
         // this.userService = new UserService.default();
     }
 
-    public async createPost(params: PostDto.CreatePostReqDto, userId:Types.ObjectId){
-        const { user } = await this.validateCreatePost(userId);
+    public async createPost(params: PostDto.CreatePostReqDto, userId:Types.ObjectId, file?:fileUpload.UploadedFile | fileUpload.UploadedFile[]){
+        const { user, file: userFile } = await this.validateCreatePost(userId, file);
 
-        const createPostDoc = {
+        let createPostDoc:any = {
             caption: params.caption,
             userName: user.userName,
             userId: userId
+        }
+
+        let imagePath:string;
+        if(userFile){   
+            imagePath = path.join(__dirname,'../public/uploads/'+`${userFile.name}`)
+            createPostDoc = {
+                ...createPostDoc, imageUrl:`/uploads/${userFile.name}`
+            }
+            await userFile.mv(imagePath);
         }
         const post = await PostModel.default.create(createPostDoc);
         return post;
@@ -88,13 +99,26 @@ export default class PostService {
         await PostModel.default.updateOne({_id: params.postId},{$pull:{likes:userId}});
     }
 
-    private async validateCreatePost(userId: Types.ObjectId){
+    private async validateCreatePost(userId: Types.ObjectId, file?:fileUpload.UploadedFile | fileUpload.UploadedFile[]){
         const user = await UserModel.default.findOne({_id:userId});
         if(!user){
             throw new BadRequestError('User does not exist');
         }
+        const MAX_SIZE = 1024*1024;
+        if (file) {
+            if (Array.isArray(file)) {
+                throw new BadRequestError('Please upload a single file')
+            } else {
+                if (!file.mimetype.startsWith('image/')) {
+                    throw new BadRequestError('Invalid file type. Only images are allowed.');
+                }
+                if(file.size > MAX_SIZE){
+                    throw new BadRequestError('Please upload image upto 1KB');
+                }
+            }
+        }
 
-        return {user};
+        return {user, file};
     }
 
     private async validateUpdatePost(params: PostDto.UpdatePostReqDto, userId:Types.ObjectId){
