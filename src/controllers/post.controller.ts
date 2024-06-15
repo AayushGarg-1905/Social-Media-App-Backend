@@ -23,7 +23,8 @@ export default class PostController{
     public async updatePost(req: express.Request, res: express.Response, next: express.NextFunction){
         try{
             const params:PostDto.UpdatePostReqDto = {...req.body, ...req.params};
-            const result = await this.postService.updatePost(params);
+            const userId = req.userId!;
+            const result = await this.postService.updatePost(params,userId);
             res.status(200).json({msg:'Post updated successfully',data:result})
         } catch(e){
             next(e);
@@ -33,7 +34,8 @@ export default class PostController{
     public async deletePost(req: express.Request, res: express.Response, next: express.NextFunction){
         try{
             const params:PostDto.DeletePostReqDto = {...req.body, ...req.params};
-            await this.postService.deletePost(params);
+            const userId = req.userId!;
+            await this.postService.deletePost(params,userId);
             res.status(200).json({msg:'Post deleted successfully'})
         } catch(e){
             next(e);

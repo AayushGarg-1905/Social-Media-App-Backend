@@ -1,6 +1,6 @@
-import { ObjectId, Types } from "mongoose";
+import { Types } from "mongoose";
 import { BadRequestError } from "../config/error";
-import { AuthDto, UserModel, EncryptionService, DatabaseService, CommonUtils, PassportModel, UserDto } from "../internal_exports";
+import { UserModel, EncryptionService, DatabaseService, PassportModel, UserDto } from "../internal_exports";
 
 export default class UserService {
     protected encryptionService: EncryptionService.default

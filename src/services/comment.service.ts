@@ -68,13 +68,9 @@ export default class CommentService {
     }
 
     private async validateUpdateComment(params: CommentDto.UpdateCommentReqDto, userId:Types.ObjectId){
-        const comment = await CommentModel.default.findOne({_id:params.commentId});
+        const comment = await CommentModel.default.findOne({_id:params.commentId, userId});
         if(!comment){
             throw new BadRequestError("Comment does not exist");
-        }
-
-        if(!comment.userId.equals(userId)){
-            throw new BadRequestError("Not allowed to update this comment");
         }
         return {comment}
     }

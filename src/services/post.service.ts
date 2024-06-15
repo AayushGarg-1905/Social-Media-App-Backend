@@ -24,8 +24,8 @@ export default class PostService {
         return post;
     }
 
-    public async updatePost(params: PostDto.UpdatePostReqDto){
-        const { post } = await this.validateUpdatePost(params);
+    public async updatePost(params: PostDto.UpdatePostReqDto, userId:Types.ObjectId){
+        const { post } = await this.validateUpdatePost(params, userId);
         const {caption} = params;
 
         if(caption){
@@ -35,9 +35,9 @@ export default class PostService {
         return post
     }
 
-    public async deletePost(params: PostDto.DeletePostReqDto){
+    public async deletePost(params: PostDto.DeletePostReqDto, userId:Types.ObjectId){
         
-        const post = await PostModel.default.findOneAndDelete({_id:params.postId});
+        const post = await PostModel.default.findOneAndDelete({_id:params.postId, userId});
         if(!post){
             throw new BadRequestError("Post does not exist");
         }
@@ -97,8 +97,8 @@ export default class PostService {
         return {user};
     }
 
-    private async validateUpdatePost(params: PostDto.UpdatePostReqDto){
-        const post = await PostModel.default.findOne({_id: params.postId});
+    private async validateUpdatePost(params: PostDto.UpdatePostReqDto, userId:Types.ObjectId){
+        const post = await PostModel.default.findOne({_id: params.postId, userId});
         if(!post){
             throw new BadRequestError('Post does not exsist');
         }
