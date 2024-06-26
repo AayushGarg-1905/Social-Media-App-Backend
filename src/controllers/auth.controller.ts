@@ -25,5 +25,15 @@ export default class AuthController{
             next(e);
         }
     }
+
+    public async checkLoginUser(req: express.Request, res: express.Response, next: express.NextFunction){
+        try{
+            const userId = req.userId!;
+            const result = await this.authService.checkLoginUser(userId);
+            res.status(200).json({msg:'User Logged in successfully', data:result});
+        } catch(e){
+            next(e);
+        }
+    }
 }
 

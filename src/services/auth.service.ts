@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { BadRequestError } from "../config/error";
 import { AuthDto, UserModel, EncryptionService, DatabaseService, CommonUtils, PassportModel } from "../internal_exports";
 
@@ -55,6 +56,23 @@ export default class AuthService {
         return { userData };
     }
 
+    public async checkLoginUser(userId:Types.ObjectId) {
+        const { user } = await this.validateCheckLoginUser(userId);
+
+        const userData = {
+            userName: user.userName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            gender: user.gender,
+            dateOfBirth: user.dateOfBirth,
+            address: user.address,
+            followers: user.followers,
+            following: user.following
+        }
+
+        return { userData };
+    }
+
     private async validateLoginUser(params: AuthDto.LoginUserReqDto) {
 
         const user = await UserModel.default.findOne({ email: params.email });
@@ -78,6 +96,14 @@ export default class AuthService {
     private getSaltedPasswordHash(password: string, salt: string) {
         const passwordHash = this.encryptionService.md5Hash(password + salt);
         return { passwordHash }
+    }
+
+    private async validateCheckLoginUser(userId:Types.ObjectId){
+        const user = await UserModel.default.findOne({ _id: userId });
+        if (!user) {
+            throw new BadRequestError('User does not exist');
+        }
+        return {user};
     }
 
     public getAccessToken() {
