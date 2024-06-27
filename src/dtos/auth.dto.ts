@@ -12,7 +12,7 @@ export class RegisterUserReqDto {
     @IsDefined()
     @Expose()
     @IsString()
-    @Length(3,15)
+    @Length(1,15)
     userName: string;
 
     @IsDefined()

@@ -10,7 +10,7 @@ export default class AuthController{
         try{
             const params: AuthDto.RegisterUserReqDto = req.body;
             const result = await this.authService.registerUser(params)
-            res.status(200).json({msg:'User Registered Successfully',data:result})
+            res.status(200).json({msg:'User Registered Successfully'})
         }catch(e){
             next(e);
         }

@@ -34,8 +34,6 @@ export default class AuthService {
             user = await UserModel.default.create([userDoc], { session });
             await PassportModel.default.create([{...passportDoc, userId: user[0]._id}], { session });
         });
-
-        return user;
     }
 
     public async loginUser(params: AuthDto.LoginUserReqDto) {
