@@ -15,6 +15,11 @@ export class CreatePostReqDto {
     @IsString()
     @Length(2,200)
     caption?: string;
+
+    @IsOptional()
+    @Expose()
+    @IsString()
+    imageUrl?: string;
 }
 
 export class UpdatePostReqDto {

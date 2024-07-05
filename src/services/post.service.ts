@@ -20,19 +20,22 @@ export default class PostService {
         let createPostDoc:any = {
             caption: params.caption,
             userName: user.userName,
+            imageUrl: params.imageUrl,
             userId: userId
         }
-
-        let imagePath:string;
-        if(userFile){   
-            imagePath = path.join(__dirname,'../public/uploads/'+`${userFile.name}`)
-            createPostDoc = {
-                ...createPostDoc, imageUrl:`/uploads/${userFile.name}`
-            }
-            await userFile.mv(imagePath);
-        }
+        
         const post = await PostModel.default.create(createPostDoc);
-        return post;
+        
+        const postData = {
+            caption: post.caption,
+            userName: post.userName,
+            userId: post.userId,
+            likes: post.likes,
+            comments: post.comments,
+            imageUrl: post.imageUrl,
+            createdAt: post.createdAt
+        }
+        return postData;
     }
 
     public async updatePost(params: PostDto.UpdatePostReqDto, userId:Types.ObjectId){
@@ -60,7 +63,7 @@ export default class PostService {
     }
 
     public async getAllPosts(){
-        const posts = await PostModel.default.find({});
+        const posts = await PostModel.default.find({}).sort({createdAt:-1});
         const postsData = posts.map((post)=>{
             return {
                 caption: post.caption,
