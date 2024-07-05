@@ -68,7 +68,8 @@ export default class PostService {
                 userId: post.userId,
                 likes: post.likes,
                 comments: post.comments,
-                imageUrl: post.imageUrl
+                imageUrl: post.imageUrl,
+                createdAt: post.createdAt
             }
         })
         return {postsData};

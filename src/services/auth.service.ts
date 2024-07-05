@@ -41,6 +41,7 @@ export default class AuthService {
 
         const userData = {
             accessToken: passport.accessToken,
+            userId: user._id,
             userName: user.userName,
             email: user.email,
             phoneNumber: user.phoneNumber,
@@ -48,7 +49,9 @@ export default class AuthService {
             dateOfBirth: user.dateOfBirth,
             address: user.address,
             followers: user.followers,
-            following: user.following
+            following: user.following,
+            coverPicture: user.coverPicture,
+            profilePicture: user.profilePicture
         }
 
         return { userData };
