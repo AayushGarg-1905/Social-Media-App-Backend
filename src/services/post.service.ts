@@ -66,6 +66,7 @@ export default class PostService {
         const posts = await PostModel.default.find({}).sort({createdAt:-1});
         const postsData = posts.map((post)=>{
             return {
+                postId: post._id,
                 caption: post.caption,
                 userName: post.userName,
                 userId: post.userId,
