@@ -25,8 +25,8 @@ export default class PostController{
         try{
             const params:PostDto.UpdatePostReqDto = {...req.body, ...req.params};
             const userId = req.userId!;
-            const result = await this.postService.updatePost(params,userId);
-            res.status(200).json({msg:'Post updated successfully',data:result})
+            await this.postService.updatePost(params,userId);
+            res.status(200).json({msg:'Post updated successfully'})
         } catch(e){
             next(e);
         }

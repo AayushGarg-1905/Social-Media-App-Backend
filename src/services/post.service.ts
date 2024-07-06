@@ -46,7 +46,6 @@ export default class PostService {
             post.caption = caption
         }
         await post.save();
-        return post
     }
 
     public async deletePost(params: PostDto.DeletePostReqDto, userId:Types.ObjectId){
