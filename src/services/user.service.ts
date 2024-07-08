@@ -53,7 +53,21 @@ export default class UserService {
 
     public async getSingleUser(params: UserDto.GetUserReqDto){
        const {user} =  await this.validateGetSingleUser(params);
-       return user;
+       const userData = {
+            userId: user._id,
+            userName: user.userName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            gender: user.gender,
+            dateOfBirth: user.dateOfBirth,
+            address: user.address,
+            followers: user.followers,
+            following: user.following,
+            coverPicture: user.coverPicture,
+            profilePicture: user.profilePicture
+        }
+
+        return userData;
     }
 
     public async followUser(params: UserDto.FollowUserReqDto, userId: Types.ObjectId){

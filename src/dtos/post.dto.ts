@@ -31,7 +31,7 @@ export class UpdatePostReqDto {
     @IsOptional()
     @Expose()
     @IsString()
-    @Length(2,200)
+    @Length(0,200)
     caption: string;
 }
 

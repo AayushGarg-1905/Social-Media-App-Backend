@@ -12,7 +12,7 @@ export class CreateCommentReqDto {
     @IsDefined()
     @Expose()
     @IsString()
-    @Length(2,200)
+    @Length(1,200)
     text: string;
 
     @IsDefined()
@@ -26,6 +26,7 @@ export class DeleteCommentReqDto {
     @Expose()
     @IsMongoId()
     commentId: Types.ObjectId
+
 }
 
 export class GetPostCommentsReqDto {
@@ -44,6 +45,6 @@ export class UpdateCommentReqDto {
     @IsDefined()
     @Expose()
     @IsString()
-    @Length(2,200)
+    @Length(1,200)
     text: string;
 }

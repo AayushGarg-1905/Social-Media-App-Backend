@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-const CommentSchema = new mongoose.Schema({
+export const CommentSchema = new mongoose.Schema({
     text: {
         type: String,
         maxLength: 200,
+        required:true
     },
     userId: {
         type: Schema.Types.ObjectId,

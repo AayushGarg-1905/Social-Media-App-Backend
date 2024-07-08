@@ -1,5 +1,20 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
+import { CommentModel } from "../internal_exports";
+import { CommentSchema } from "./comment.model";
+
+
+
+const userCommentSchema = new mongoose.Schema({
+    commentId:{
+        type:Schema.Types.ObjectId,
+        required:true
+    },
+    userId:{
+        type:Schema.Types.ObjectId,
+        required:true
+    }
+})
 
 const PostSchema = new mongoose.Schema({
     caption: {
@@ -22,8 +37,8 @@ const PostSchema = new mongoose.Schema({
         default: []
     },
     comments: {
-        type: [Schema.Types.ObjectId],
-        default: []
+        type: [userCommentSchema],
+        default: [],
     }
 }, { timestamps: true })
 

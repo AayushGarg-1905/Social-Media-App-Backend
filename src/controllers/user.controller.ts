@@ -51,8 +51,8 @@ export default class UserController{
         try{
             const params: UserDto.FollowUserReqDto = {...req.body, ...req.params}
             const userId = req.userId!;
-            const result = await this.userService.followUser(params, userId);
-            res.status(200).json({msg:'User followed Successfully', data:result});
+            await this.userService.followUser(params, userId);
+            res.status(200).json({msg:'User followed Successfully'});
         }catch(e){
             next(e);
         }

@@ -15,7 +15,7 @@ export default class PostService {
     }
 
     public async createPost(params: PostDto.CreatePostReqDto, userId:Types.ObjectId, file?:fileUpload.UploadedFile | fileUpload.UploadedFile[]){
-        const { user, file: userFile } = await this.validateCreatePost(userId, file);
+        const { user } = await this.validateCreatePost(userId, file);
 
         let createPostDoc:any = {
             caption: params.caption,
@@ -42,9 +42,7 @@ export default class PostService {
         const { post } = await this.validateUpdatePost(params, userId);
         const {caption} = params;
 
-        if(caption){
-            post.caption = caption
-        }
+        post.caption = caption || '';
         await post.save();
     }
 
@@ -108,21 +106,21 @@ export default class PostService {
         if(!user){
             throw new BadRequestError('User does not exist');
         }
-        const MAX_SIZE = 1024*1024;
-        if (file) {
-            if (Array.isArray(file)) {
-                throw new BadRequestError('Please upload a single file')
-            } else {
-                if (!file.mimetype.startsWith('image/')) {
-                    throw new BadRequestError('Invalid file type. Only images are allowed.');
-                }
-                if(file.size > MAX_SIZE){
-                    throw new BadRequestError('Please upload image upto 1KB');
-                }
-            }
-        }
+        // const MAX_SIZE = 1024*1024;
+        // if (file) {
+        //     if (Array.isArray(file)) {
+        //         throw new BadRequestError('Please upload a single file')
+        //     } else {
+        //         if (!file.mimetype.startsWith('image/')) {
+        //             throw new BadRequestError('Invalid file type. Only images are allowed.');
+        //         }
+        //         if(file.size > MAX_SIZE){
+        //             throw new BadRequestError('Please upload image upto 1KB');
+        //         }
+        //     }
+        // }
 
-        return {user, file};
+        return {user};
     }
 
     private async validateUpdatePost(params: PostDto.UpdatePostReqDto, userId:Types.ObjectId){

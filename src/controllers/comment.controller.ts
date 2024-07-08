@@ -15,8 +15,8 @@ export default class CommentController{
         try{
             const params: CommentDto.CreateCommentReqDto = {...req.body, ...req.params};
             const userId = req.userId!;
-            const result = await this.commentService.createComment(params,userId);
-            res.status(200).json({msg:'Comment created successfully', data: result})
+            await this.commentService.createComment(params,userId);
+            res.status(200).json({msg:'Comment added successfully'})
         } catch(e){
             next(e);
         }
@@ -47,8 +47,8 @@ export default class CommentController{
         try{
             const params:CommentDto.UpdateCommentReqDto = {...req.body, ...req.params};
             const userId = req.userId!;
-            const result = await this.commentService.updateComment(params,userId);
-            res.status(200).json({msg:'Comment updated successfully',data:result})
+            await this.commentService.updateComment(params,userId);
+            res.status(200).json({msg:'Comment updated successfully'})
         } catch(e){
             next(e);
         }
