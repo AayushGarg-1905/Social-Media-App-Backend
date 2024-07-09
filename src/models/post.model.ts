@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
-import { CommentModel } from "../internal_exports";
+import { CommentModel, UserModel } from "../internal_exports";
 import { CommentSchema } from "./comment.model";
 
 
@@ -24,6 +24,7 @@ const PostSchema = new mongoose.Schema({
     userId: {
         type: Schema.Types.ObjectId,
         required:true,
+        ref:UserModel.default
     },
     userName: {
         type: String,

@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 
-import { IsDefined, IsInt, IsOptional, IsString, Length, Max, Min, IsMongoId } from 'class-validator';
+import { IsDefined, IsInt, IsOptional, IsString, Length, Max, Min, IsMongoId, IsEmail } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { Types } from 'mongoose';
 
@@ -13,6 +13,22 @@ export class UpdateUserReqDto {
     @IsString()
     @Length(3,15)
     userName?: string;
+
+    @IsOptional()
+    @Expose()
+    @IsString()
+    @IsEmail()
+    email?: string;
+
+    @IsOptional()
+    @Expose()
+    @IsString()
+    profilePicture?: string;
+
+    @IsOptional()
+    @Expose()
+    @IsString()
+    coverPicture?: string;
 
     @IsOptional()
     @Expose()

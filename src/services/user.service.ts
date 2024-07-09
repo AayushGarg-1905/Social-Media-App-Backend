@@ -1,17 +1,19 @@
 import { Types } from "mongoose";
 import { BadRequestError } from "../config/error";
-import { UserModel, EncryptionService, DatabaseService, PassportModel, UserDto } from "../internal_exports";
+import { UserModel, EncryptionService, DatabaseService, PassportModel, UserDto, PostService, PostModel } from "../internal_exports";
 
 export default class UserService {
     protected encryptionService: EncryptionService.default
     protected databaseService: DatabaseService.default
+    protected postService: PostService.default;
     constructor() {
         this.encryptionService = new EncryptionService.default();
         this.databaseService = new DatabaseService.default();
+        this.postService = new PostService.default();
     }
 
     public async updateUser(params: UserDto.UpdateUserReqDto, userId: Types.ObjectId){
-        const { phoneNumber, userName } = params;
+        const { phoneNumber, userName, email, profilePicture, coverPicture } = params;
         const { user } = await this.validateUpdateUser(userId);
 
         if(phoneNumber){
@@ -20,7 +22,16 @@ export default class UserService {
         if(userName){
             user.userName = userName;
         }
-        await user.save();
+
+        const updateUserDoc = {
+            email,
+            phoneNumber,
+            userName,
+            profilePicture,
+            coverPicture
+        }
+        await UserModel.default.updateOne({_id:userId},updateUserDoc);
+        // await user.save();
     }
 
     public async deleteUser(userId: Types.ObjectId){
@@ -53,6 +64,7 @@ export default class UserService {
 
     public async getSingleUser(params: UserDto.GetUserReqDto){
        const {user} =  await this.validateGetSingleUser(params);
+       const posts = await PostModel.default.find({userId: user._id})
        const userData = {
             userId: user._id,
             userName: user.userName,
@@ -63,6 +75,7 @@ export default class UserService {
             address: user.address,
             followers: user.followers,
             following: user.following,
+            totalPosts: posts.length, 
             coverPicture: user.coverPicture,
             profilePicture: user.profilePicture
         }

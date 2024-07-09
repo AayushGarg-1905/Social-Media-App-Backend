@@ -60,7 +60,7 @@ export default class PostService {
     }
 
     public async getAllPosts(){
-        const posts = await PostModel.default.find({}).sort({createdAt:-1});
+        const posts = await PostModel.default.find({}).sort({createdAt:-1})
         const postsData = posts.map((post)=>{
             return {
                 postId: post._id,
@@ -77,15 +77,17 @@ export default class PostService {
     }
 
     public async getAllUserPosts(params: PostDto.GetUserPostsReqDto){
-        const posts = await PostModel.default.find({userId: params.userId});
+        const posts = await PostModel.default.find({userId: params.userId}).sort({createdAt:-1});
         const postsData = posts.map((post)=>{
             return {
+                postId: post._id,
                 caption: post.caption,
                 userName: post.userName,
                 userId: post.userId,
                 likes: post.likes,
                 comments: post.comments,
-                imageUrl: post.imageUrl
+                imageUrl: post.imageUrl,
+                createdAt: post.createdAt
             }
         })
         return {postsData};
