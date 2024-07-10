@@ -16,12 +16,12 @@ export default class UserService {
         const { phoneNumber, userName, email, profilePicture, coverPicture } = params;
         const { user } = await this.validateUpdateUser(userId);
 
-        if(phoneNumber){
-            user.phoneNumber = phoneNumber;
-        }
-        if(userName){
-            user.userName = userName;
-        }
+        // if(phoneNumber){
+        //     user.phoneNumber = phoneNumber;
+        // }
+        // if(userName){
+        //     user.userName = userName;
+        // }
 
         const updateUserDoc = {
             email,

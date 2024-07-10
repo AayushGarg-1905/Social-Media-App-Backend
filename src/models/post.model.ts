@@ -26,10 +26,6 @@ const PostSchema = new mongoose.Schema({
         required:true,
         ref:UserModel.default
     },
-    userName: {
-        type: String,
-        required: true,
-    },
     imageUrl: {
         type: String,
     },

@@ -58,9 +58,11 @@ export default class AuthService {
     }
 
     public async checkLoginUser(userId:Types.ObjectId) {
-        const { user } = await this.validateCheckLoginUser(userId);
+        const { user,passport } = await this.validateCheckLoginUser(userId);
 
         const userData = {
+            accessToken: passport.accessToken,
+            userId: user._id,
             userName: user.userName,
             email: user.email,
             phoneNumber: user.phoneNumber,
@@ -68,10 +70,16 @@ export default class AuthService {
             dateOfBirth: user.dateOfBirth,
             address: user.address,
             followers: user.followers,
-            following: user.following
+            following: user.following,
+            coverPicture: user.coverPicture,
+            profilePicture: user.profilePicture
         }
 
         return { userData };
+    }
+
+    public async logoutUser(userId:Types.ObjectId) {
+        await PassportModel.default.updateOne({userId:userId},{accessToken:this.getAccessToken()});
     }
 
     private async validateLoginUser(params: AuthDto.LoginUserReqDto) {
@@ -104,8 +112,15 @@ export default class AuthService {
         if (!user) {
             throw new BadRequestError('User does not exist');
         }
-        return {user};
+        const passport = await PassportModel.default.findOne({userId:userId});
+
+        if(!passport){
+            throw new BadRequestError('User does not exist');
+        }
+        return {user, passport};
     }
+
+    // private async validateLogoutUser(userId:Typ)
 
     public getAccessToken() {
         return CommonUtils.default.getRandomUUid();

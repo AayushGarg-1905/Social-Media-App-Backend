@@ -35,5 +35,15 @@ export default class AuthController{
             next(e);
         }
     }
+
+    public async logoutUser(req: express.Request, res: express.Response, next: express.NextFunction){
+        try{
+            const userId = req.userId!;
+            const result = await this.authService.logoutUser(userId);
+            res.status(200).json({msg:'User Logged out successfully'});
+        } catch(e){
+            next(e);
+        }
+    }
 }
 

@@ -40,19 +40,41 @@ export default class CommentService {
     public async getAllPostComments(params: CommentDto.GetPostCommentsReqDto){
         const {post} = await this.validateGetAllPostComments(params);
 
-        const comments = await CommentModel.default.find({postId: params.postId}).sort({createdAt:-1});
-
-
-
-        const commentData = comments.map((comment)=>{
-            return ({
-                commentId: comment._id,
-                text: comment.text,
-                userId: comment.userId,
-                userName: post.userName,
-                createdAt: comment.createdAt
-            })
-        })
+        const commentData = await CommentModel.default.aggregate([
+            {
+                $match:{
+                    postId: post._id
+                }
+            },
+            {
+                $lookup:{
+                    from:'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userData'
+                },
+            },
+            {
+                $unwind:{
+                    path:'$userData'
+                },
+            },
+            {
+                $project:{
+                    commentId:'$_id',
+                    text:1,
+                    userId:1,
+                    createdAt:1,
+                    userName:'$userData.userName',
+                    userProfilePicture:'$userData.profilePicture'
+                },
+            },
+            {
+                $sort:{
+                    createdAt:-1
+                }
+            }
+        ])
 
         return commentData
     }
