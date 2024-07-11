@@ -103,6 +103,68 @@ export default class UserService {
         });
     }
 
+    public async getFollowingList(params: UserDto.GetFollowingListReqDto){
+        const {user} = await this.validateGetFollowingList(params);
+
+        const followingListData = await UserModel.default.aggregate([
+            {
+                $match:{
+                    _id: user._id
+                }
+            },
+            {
+                $lookup:{
+                    from: "users",
+                    localField: "following",
+                    foreignField: "_id",
+                    as: "followingData",
+                }
+            },
+            {
+                $project:{
+                    followingData: {
+                        userName: 1,
+                        _id: 1,
+                        profilePicture: 1,
+                    },
+                }
+            }
+        ]);
+
+        return followingListData[0];
+    }
+
+    public async getFollowersList(params: UserDto.GetFollowersListReqDto){
+        const {user} = await this.validateGetFollowersList(params);
+
+        const followersListData = await UserModel.default.aggregate([
+            {
+                $match:{
+                    _id: user._id
+                }
+            },
+            {
+                $lookup:{
+                    from: "users",
+                    localField: "followers",
+                    foreignField: "_id",
+                    as: "followersData",
+                }
+            },
+            {
+                $project:{
+                    followersData: {
+                        userName: 1,
+                        _id: 1,
+                        profilePicture: 1,
+                    },
+                }
+            }
+        ]);
+
+        return followersListData[0];
+    }
+
     private async validateUpdateUser(userId: Types.ObjectId){
         const user = await UserModel.default.findOne({_id: userId});
         if(!user){
@@ -146,6 +208,24 @@ export default class UserService {
         if(!isAlreadyUnFollowing){
             throw new BadRequestError('You are already not following this person');
         }
+    }
+
+    private async validateGetFollowingList(params:UserDto.GetFollowingListReqDto){
+        const user = await UserModel.default.findOne({_id:params.userId});
+        if(!user){
+            throw new BadRequestError('User does not exist');
+        }
+
+        return {user};
+    }
+
+    private async validateGetFollowersList(params:UserDto.GetFollowersListReqDto){
+        const user = await UserModel.default.findOne({_id:params.userId});
+        if(!user){
+            throw new BadRequestError('User does not exist');
+        }
+
+        return {user};
     }
 
 }

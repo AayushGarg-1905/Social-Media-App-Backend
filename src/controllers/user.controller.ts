@@ -69,5 +69,27 @@ export default class UserController{
         }
     }
 
+    public async getFollowingList(req: express.Request, res:express.Response, next: express.NextFunction){
+        try{
+            const params: UserDto.GetFollowingListReqDto = {...req.body, ...req.params}
+            // const userId = req.userId!;
+            const result = await this.userService.getFollowingList(params);
+            res.status(200).json({msg:'Following List fetched successfully', data:result});
+        }catch(e){
+            next(e);
+        }
+    }
+
+    public async getFollowersList(req: express.Request, res:express.Response, next: express.NextFunction){
+        try{
+            const params: UserDto.GetFollowersListReqDto = {...req.body, ...req.params}
+            // const userId = req.userId!;
+            const result = await this.userService.getFollowersList(params);
+            res.status(200).json({msg:'Followers List fetched successfully', data:result});
+        }catch(e){
+            next(e);
+        }
+    }
+
 }
 

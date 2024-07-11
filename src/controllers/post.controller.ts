@@ -13,8 +13,7 @@ export default class PostController{
         try{
             const params:PostDto.CreatePostReqDto = {...req.body};
             const userId = req.userId!;
-            const file = req.files?.image;
-            const result = await this.postService.createPost(params,userId,file);
+            const result = await this.postService.createPost(params,userId);
             res.status(200).json({msg:'Post created successfully', data: result})
         } catch(e){
             next(e);

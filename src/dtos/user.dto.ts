@@ -58,3 +58,17 @@ export class UnFollowUserReqDto {
     @IsMongoId()
     followerId: Types.ObjectId   // id of person to which we have to follow
 }
+
+export class GetFollowingListReqDto{
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    userId: Types.ObjectId
+}
+
+export class GetFollowersListReqDto{
+    @IsDefined()
+    @Expose()
+    @IsMongoId()
+    userId: Types.ObjectId
+}

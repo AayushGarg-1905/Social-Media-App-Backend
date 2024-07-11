@@ -42,16 +42,6 @@ export default class AuthService {
         const userData = {
             accessToken: passport.accessToken,
             userId: user._id,
-            userName: user.userName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            gender: user.gender,
-            dateOfBirth: user.dateOfBirth,
-            address: user.address,
-            followers: user.followers,
-            following: user.following,
-            coverPicture: user.coverPicture,
-            profilePicture: user.profilePicture
         }
 
         return { userData };
@@ -63,16 +53,6 @@ export default class AuthService {
         const userData = {
             accessToken: passport.accessToken,
             userId: user._id,
-            userName: user.userName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            gender: user.gender,
-            dateOfBirth: user.dateOfBirth,
-            address: user.address,
-            followers: user.followers,
-            following: user.following,
-            coverPicture: user.coverPicture,
-            profilePicture: user.profilePicture
         }
 
         return { userData };

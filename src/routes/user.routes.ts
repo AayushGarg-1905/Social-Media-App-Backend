@@ -12,4 +12,6 @@ router.get('/all', authMiddleware.authenticateUser.bind(authMiddleware), userCon
 router.get('/:id', authMiddleware.authenticateUser.bind(authMiddleware), dtoValidatorMiddleware.validateRequest(UserDto.GetUserReqDto), userController.getSingleUser.bind(userController));
 router.post('/follow/:followerId', authMiddleware.authenticateUser.bind(authMiddleware), dtoValidatorMiddleware.validateRequest(UserDto.FollowUserReqDto), userController.followUser.bind(userController))
 router.post('/unfollow/:followerId', authMiddleware.authenticateUser.bind(authMiddleware), dtoValidatorMiddleware.validateRequest(UserDto.UnFollowUserReqDto), userController.unFollowUser.bind(userController))
+router.get('/following/:userId/all',authMiddleware.authenticateUser.bind(authMiddleware),dtoValidatorMiddleware.validateRequest(UserDto.GetFollowingListReqDto), userController.getFollowingList.bind(userController));
+router.get('/followers/:userId/all',authMiddleware.authenticateUser.bind(authMiddleware),dtoValidatorMiddleware.validateRequest(UserDto.GetFollowersListReqDto), userController.getFollowersList.bind(userController));
 export default router;
