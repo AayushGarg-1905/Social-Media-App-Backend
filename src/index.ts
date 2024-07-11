@@ -10,10 +10,12 @@ import authRouter from './routes/auth.routes'
 import postRouter from './routes/post.routes'
 import CommentRouter from './routes/comment.routes'
 import path from 'path';
+import cors from 'cors'
 
 dotenv.config();
 const app = express();
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, './public')));
 app.use(express.json())
 app.use(fileUpload());
