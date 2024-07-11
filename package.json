@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "devWatch": "concurrently \"npx tsc --watch\" \"set NODE_ENV=development && nodemon -r source-map-support/register -q dist/src/index.js\"",
     "start": "concurrently \"npx tsc \" \"set NODE_ENV=production && nodemon -r source-map-support/register -q dist/src/index.js\"",
-    "build":"tsc"
+    "build":"npx tsc"
   },
   "keywords": [],
   "author": "",
